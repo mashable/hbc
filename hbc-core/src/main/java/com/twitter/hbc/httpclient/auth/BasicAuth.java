@@ -14,6 +14,7 @@
 package com.twitter.hbc.httpclient.auth;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.BaseEncoding;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -29,12 +30,12 @@ public class BasicAuth implements Authentication {
   }
 
   public void setupConnection(AbstractHttpClient client) {
-    client.getCredentialsProvider().setCredentials(
-            AuthScope.ANY,
-            new UsernamePasswordCredentials(username, password)
-    );
   }
 
   @Override
-  public void signRequest(HttpUriRequest request, String postParams) {}
+  public void signRequest(HttpUriRequest request, String postParams) {
+    String authToken = this.username + ":" + this.password;
+    String authValue = "Basic " + BaseEncoding.base64().encode(authToken.getBytes());
+    request.addHeader("Authorization", authValue);
+  }
 }

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 public abstract class EnterpriseStreamingEndpoint implements StreamingEndpoint {
-  private static final String BASE_PATH = "/accounts/%s/publishers/%s/streams/%s/%s.json";
+  private static final String BASE_PATH = "/stream/%s/accounts/%s/publishers/%s/%s.json";;
   protected final String account;
   protected final String publisher;
   protected final String product;
@@ -30,28 +30,27 @@ public abstract class EnterpriseStreamingEndpoint implements StreamingEndpoint {
   protected final ConcurrentMap<String, String> queryParameters = Maps.newConcurrentMap();
 
   public EnterpriseStreamingEndpoint(String account, String product, String label) {
-    this(account, product, label, 0);
+      this(account, "twitter", product, label, 0);
   }
 
-  public EnterpriseStreamingEndpoint(String account, String product, String label, int clientId) {
-      this(account, "twitter", product, label, clientId);
+  public EnterpriseStreamingEndpoint(String account, String product, String label, int partitionId) {
+      this(account, "twitter", product, label, partitionId);
   }
 
-  public EnterpriseStreamingEndpoint(String account, String publisher, String product, String label, int clientId) {
+  public EnterpriseStreamingEndpoint(String account, String publisher, String product, String label, int partitionId) {
     this.account = Preconditions.checkNotNull(account);
     this.product = Preconditions.checkNotNull(product);
     this.label = Preconditions.checkNotNull(label);
     this.publisher = Preconditions.checkNotNull(publisher);
 
-    if (clientId > 0) {
-      addQueryParameter("client", String.valueOf(clientId));
+    if (partitionId > 0) {
+      addQueryParameter("partition", String.valueOf(partitionId));
     }
-
   }
 
   @Override
   public String getURI() {
-    String uri = String.format(BASE_PATH, account.trim(), publisher.trim(), product.trim(), label.trim());
+    String uri = getBaseUri();
 
     if (queryParameters.isEmpty()) {
       return uri;
@@ -64,6 +63,26 @@ public abstract class EnterpriseStreamingEndpoint implements StreamingEndpoint {
     return Joiner.on("&")
             .withKeyValueSeparator("=")
             .join(params);
+  }
+
+  protected String getBaseUri() {
+    return String.format(BASE_PATH, product.trim(), account.trim(), publisher.trim(), label.trim());
+  }
+
+  protected String getAccount() {
+    return account;
+  }
+
+  protected String getProduct() {
+    return product;
+  }
+
+  protected String getLabel() {
+    return label;
+  }
+
+  protected String getPublisher() {
+    return publisher;
   }
 
   @Override

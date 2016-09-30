@@ -20,7 +20,14 @@ public class RealTimeEnterpriseStreamingEndpoint extends EnterpriseStreamingEndp
     super(account, product, label);
   }
 
-  public RealTimeEnterpriseStreamingEndpoint(String account, String product, String label, int clientId) {
-    super(account, product, label, clientId);
+  public RealTimeEnterpriseStreamingEndpoint(String account, String product, String label, int partitionId) {
+    super(account, product, label, partitionId);
+  }
+
+  public RealTimeEnterpriseStreamingEndpoint(String account, String product, String label, int partitionId, int backfillMinutes) {
+    this(account, product, label, partitionId);
+    if (backfillMinutes > 0) {
+      addQueryParameter("backfillMinutes", String.valueOf(backfillMinutes));
+    }
   }
 }

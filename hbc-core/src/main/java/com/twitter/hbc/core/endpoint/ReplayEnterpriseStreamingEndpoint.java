@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class ReplayEnterpriseStreamingEndpoint extends EnterpriseStreamingEndpoint {
   private static final String DATE_FMT_STR = "yyyyMMddHHmm";
-  private static final String BASE_PATH = "/accounts/%s/publishers/twitter/replay/%s/%s.json";
+  private static final String BASE_PATH = "/replay/%s/accounts/%s/publishers/twitter/%s.json";
   private final Date fromDate;
   private final Date toDate;
 
@@ -32,7 +32,7 @@ public class ReplayEnterpriseStreamingEndpoint extends EnterpriseStreamingEndpoi
 
   @Override
   public String getURI() {
-    String uri = String.format(BASE_PATH, account.trim(), product.trim(), label.trim());
+    String uri = getBaseUri();
 
     addQueryParameter("fromDate", formatDate(this.fromDate));
     addQueryParameter("toDate", formatDate(this.toDate));
@@ -48,7 +48,12 @@ public class ReplayEnterpriseStreamingEndpoint extends EnterpriseStreamingEndpoi
     return toDate;
   }
 
-  private String formatDate(Date date) {
+  @Override
+  protected String getBaseUri() {
+    return String.format(BASE_PATH, product.trim(), account.trim(), label.trim());
+  }
+
+  protected String formatDate(Date date) {
     SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FMT_STR);
     return dateFormat.format(date);
   }

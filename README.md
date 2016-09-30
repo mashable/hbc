@@ -1,5 +1,5 @@
 # Hosebird Client (hbc) [![Build Status](https://travis-ci.org/twitter/hbc.png?branch=master)](https://travis-ci.org/twitter/hbc) [![Coverage Status](https://coveralls.io/repos/twitter/hbc/badge.png?branch=master)](https://coveralls.io/r/twitter/hbc?branch=master)
-A Java HTTP client for consuming Twitter's [Streaming API](https://dev.twitter.com/docs/streaming-apis)
+A Java HTTP client for consuming Twitter's [Streaming API](https://dev.twitter.com/docs/streaming-apis) and [Gnip V2 APIs](http://support.gnip.com/gnip2.0/)
 
 ## Features
 * GZip support
@@ -22,7 +22,7 @@ The latest hbc artifacts are published to maven central. Bringing hbc into your 
     <dependency>
       <groupId>com.twitter</groupId>
       <artifactId>hbc-core</artifactId> <!-- or hbc-twitter4j -->
-      <version>2.2.0</version> <!-- or whatever the latest version is -->
+      <version>3.0.0</version> <!-- or whatever the latest version is -->
     </dependency>
   </dependencies>
 ```
